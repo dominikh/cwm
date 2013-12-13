@@ -325,7 +325,7 @@ static void
 xev_handle_clientmessage(XEvent *ee)
 {
 	XClientMessageEvent	*e = &ee->xclient;
-	struct client_ctx	*cc, *old_cc;
+	struct client_ctx	*cc;
 
 	if ((cc = client_find(e->window)) == NULL)
 		return;
@@ -337,11 +337,6 @@ xev_handle_clientmessage(XEvent *ee)
 	if (e->message_type == ewmh[_NET_CLOSE_WINDOW])
 		client_send_delete(cc);
 
-	if (e->message_type == ewmh[_NET_ACTIVE_WINDOW] && e->format == 32) {
-		if ((old_cc = client_current()))
-			client_ptrsave(old_cc);
-		client_ptrwarp(cc);
-	}
 	if (e->message_type == ewmh[_NET_WM_STATE] && e->format == 32)
 		xu_ewmh_handle_net_wm_state_msg(cc,
 		    e->data.l[0], e->data.l[1], e->data.l[2]);
