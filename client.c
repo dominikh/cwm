@@ -181,7 +181,7 @@ client_setactive(struct client_ctx *cc)
 		    RevertToPointerRoot, CurrentTime);
 	}
 	if (cc->flags & CLIENT_WM_TAKE_FOCUS)
-		client_msg(cc, cwmh[WM_TAKE_FOCUS], Last_Event_Time);
+		client_msg(cc, cwmh[WM_TAKE_FOCUS], Last_Event_Time - 1);
 
 	if ((oldcc = client_current())) {
 		oldcc->active = 0;
