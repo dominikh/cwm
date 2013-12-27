@@ -137,10 +137,6 @@ xev_handle_configurerequest(XEvent *ee)
 			cc->geom.y = e->y;
 		if (e->value_mask & CWBorderWidth)
 			cc->bwidth = e->border_width;
-		if (e->value_mask & CWSibling)
-			wc.sibling = e->above;
-		if (e->value_mask & CWStackMode)
-			wc.stack_mode = e->detail;
 
 		if (cc->geom.x == 0 && cc->geom.w >= sc->view.w)
 			cc->geom.x -= cc->bwidth;
@@ -154,7 +150,7 @@ xev_handle_configurerequest(XEvent *ee)
 		wc.height = cc->geom.h;
 		wc.border_width = cc->bwidth;
 
-		XConfigureWindow(X_Dpy, cc->win, e->value_mask, &wc);
+		XConfigureWindow(X_Dpy, cc->win, e->value_mask & ~(CWSibling | CWStackMode), &wc);
 		client_config(cc);
 	} else {
 		/* let it do what it wants, it'll be ours when we map it. */
